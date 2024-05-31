@@ -51,7 +51,7 @@ for %%y in (%platforms%) do (
     if "!GOOS!"=="windows" set output_name=!output_name!.exe
 
     rem Invoke the build command and check the outcome
-    rem echo !output_name!
+    echo Building for %%y
     go build -o !output_name! %package%
     if !ERRORLEVEL! NEQ 0 (
         echo 'An error has occurred! Aborting the script execution...'

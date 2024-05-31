@@ -28,6 +28,7 @@ do
         output_name+='.exe'
     fi    
 
+    echo Building for $platform
     env GOOS=$GOOS GOARCH=$GOARCH go build -o $output_name $package
     if [ $? -ne 0 ]; then
            echo 'An error has occurred! Aborting the script execution...'
