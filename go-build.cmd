@@ -10,7 +10,7 @@ rem Converted from https://www.digitalocean.com/community/tutorials/how-to-build
 rem Check the input parameter - needs to be the package name
 set package=%1
 if _%package%_ == __ (
-  echo usage: %~nx0 [package-name]
+  echo Usage: %~nx0 [package-name]
   goto :EOF
 )
 
@@ -20,6 +20,19 @@ set "package_split=%package_split:/= %"
 for %%x in (%package_split%) do set package_name=%%x
 
 rem echo PACKAGE_NAME=%package_name%    
+
+rem Now work out some version information which we will use like this
+rem Requires the folloing in the 'main' package:
+rem var version string
+for /F "tokens=*" %%g in ('git describe --tags') do (
+  SET version_string=%%g
+  rem echo Version: -%version_string%-
+)
+
+if "%version_string%"=="" (
+    echo No version tag available.
+    set version_string=unknown
+)
 
 rem List of platforms we would like to build for
 rem Supported values can be obtained by running "go tool dist list"
@@ -51,8 +64,8 @@ for %%y in (%platforms%) do (
     if "!GOOS!"=="windows" set output_name=!output_name!.exe
 
     rem Invoke the build command and check the outcome
-    echo Building for %%y
-    go build -o !output_name! %package%
+    echo Building version %version_string% for %%y
+    go build -ldflags "-X main.version=%version_string%" -o !output_name! %package%
     if !ERRORLEVEL! NEQ 0 (
         echo 'An error has occurred! Aborting the script execution...'
         goto :EOF

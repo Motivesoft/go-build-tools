@@ -6,13 +6,22 @@
 
 package=$1
 if [[ -z "$package" ]]; then
-  echo "usage: $0 <package-name>"
+  echo "Usage: $0 <package-name>"
   exit 1
 fi
 
 package_split=(${package//\// })
 package_name=${package_split[-1]}
     
+# Get the version information from git tags
+# Requires the folloing in the 'main' package:
+# var version string
+version_string=$(git describe --tags)"
+if [[ -z "$version_string" ]]; then
+    echo "No version tag available."
+    set version_string=unknown
+fi
+
 # List of platforms we would like to build for
 # Supported values can be obtained by running "go tool dist list"
 # Value for current system is shown with "go version" 
@@ -29,7 +38,7 @@ do
     fi    
 
     echo Building for $platform
-    env GOOS=$GOOS GOARCH=$GOARCH go build -o $output_name $package
+    env GOOS=$GOOS GOARCH=$GOARCH go build -ldflags "-X main.version=$version_string" -o $output_name $package
     if [ $? -ne 0 ]; then
            echo 'An error has occurred! Aborting the script execution...'
         exit 1
