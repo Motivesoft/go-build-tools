@@ -16,7 +16,7 @@ package_name=${package_split[-1]}
 # Get the version information from git tags
 # Requires the folloing in the 'main' package:
 # var version string
-version_string=$(git describe --tags)"
+version_string=$(git describe --tags --long --abbrev=8)
 if [[ -z "$version_string" ]]; then
     echo "No version tag available."
     set version_string=unknown
@@ -37,7 +37,7 @@ do
         output_name+='.exe'
     fi    
 
-    echo Building for $platform
+    echo Building version $version_string for $platform
     env GOOS=$GOOS GOARCH=$GOARCH go build -ldflags "-X main.version=$version_string" -o $output_name $package
     if [ $? -ne 0 ]; then
            echo 'An error has occurred! Aborting the script execution...'

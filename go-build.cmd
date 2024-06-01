@@ -21,10 +21,10 @@ for %%x in (%package_split%) do set package_name=%%x
 
 rem echo PACKAGE_NAME=%package_name%    
 
-rem Now work out some version information which we will use like this
+rem Now work out some version information which we will parse into a variable and use later
 rem Requires the folloing in the 'main' package:
 rem var version string
-for /F "tokens=*" %%g in ('git describe --tags') do (
+for /F "tokens=*" %%g in ('git describe --tags --long --abbrev=8') do (
   SET version_string=%%g
   rem echo Version: -%version_string%-
 )

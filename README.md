@@ -20,6 +20,11 @@ Requires the following in the `main` package Go code
 ```go
 var version string
 ```
+The git tag (and abbreviated commit checksum) is obtained with this command:
+```shell
+git describe --tags --long --abbrev=8
+```
+This specific set of options is used as it seems to create identical results on Windows and Linux 
 
 ## Overall set of planned scripts:
 * build for current platform only
