@@ -33,17 +33,31 @@ This specific set of options is used as it seems to create identical results on 
 * build with Windows resources
 * combinations of the above
 
-# Building
-## Other platforms
-## Multiple platforms
-## Versioning
-### Manual
-### Git tags
 ## Resources
-### Icons
-### Other
+The package [go-winres](https://github.com/tc-hib/go-winres) is a (slightly restricted) kind of resource compiler for Go applications on Windows.
 
+Install the package:
+```shell
+go install github.com/tc-hib/go-winres@latest
+```
+
+To simply inject an application icon into a build, a `.syso` file is built by `go-winres` with that icon and that is picked up by the standard build:
+```shell
+go-winres simply --icon icon.ico
+``` 
+
+For a more detailed set of resources, `go-winres` can generate a `json` file that can be edited to provie a larger set of resources. `go-winres` can then 'make' this into a `.syso` file as part of the build process.
+
+Do this once to create a placeholder set of resources:
+```shell
+go-winres init
+```
+Edit the resultant `winres/winres.json` file to add references to any icon files and other details.
+
+Build the application with an extra step to create the `.syso` file from the `json` file:
+```shell
+go-winres make
+go build
+```
 # Installing
 ## Windows
-
-# Resources
