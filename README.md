@@ -1,6 +1,21 @@
 # Go build tools
 A collection of scripts and resources for easier Go builds
 
+## Manual operations
+The following operations are for running and building an app without using the scripts in this repo. Note the use of `-ldflags` here to allow us to set version information to whatever we want. 
+
+### Running
+```shell
+go run .
+go run -ldflags "-X main.version=1.0.0.0" .
+```
+
+### Building
+```shell
+go build .
+go build go run -ldflags "-X main.version=1.0.0.0" .
+```
+
 ## Scripts
 ### go-build.sh and go-build.cmd
 Pass a module name on the command line and the script will build:
