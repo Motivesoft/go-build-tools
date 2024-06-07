@@ -25,7 +25,7 @@ rem Now work out some version information which we will parse into a variable an
 rem Wrap the arguments to git describe in quotes as the --abbrev clause seems to require it
 rem Requires the folloing in the 'main' package:
 rem var version string
-for /F "tokens=*" %%g in ('git describe "--tags" "--long" "--abbrev=8"') do (
+for /F "tokens=*" %%g in ('git describe "--tags" "--long" "--abbrev=7"') do (
   SET version_string=%%g
   rem echo Version: -%version_string%-
 )

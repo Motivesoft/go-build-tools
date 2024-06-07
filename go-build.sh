@@ -16,7 +16,7 @@ package_name=${package_split[-1]}
 # Get the version information from git tags
 # Requires the folloing in the 'main' package:
 # var version string
-version_string=$(git describe --tags --long --abbrev=8)
+version_string=$(git describe --tags --long --abbrev=7)
 if [[ -z "$version_string" ]]; then
     echo "No version tag available."
     set version_string=unknown

@@ -37,9 +37,9 @@ var version string
 ```
 The git tag (and abbreviated commit checksum) is obtained with this command:
 ```shell
-git describe --tags --long --abbrev=8
+git describe --tags --long --abbrev=7
 ```
-This specific set of options is used as it seems to create identical results on Windows and Linux 
+This specific set of options is used as it seems to create identical results on Windows and Linux and the short commit hash matches that shown in GitHub releases. 
 
 ## Overall set of planned scripts:
 * build for current platform only
