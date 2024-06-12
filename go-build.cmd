@@ -21,10 +21,26 @@ for %%x in (%package_split%) do set package_name=%%x
 
 rem echo PACKAGE_NAME=%package_name%    
 
+rem Now work out some tag information which we will parse into a variable and use later.
+rem This should tally with the overall version info, but with just the tagname, not the full information
+for /F "tokens=*" %%g in ('git tag "--sort=taggerdate"') do (
+  SET tag_string=%%g
+  rem echo Version: -%tag_string%-
+)
+
+if "%tag_string%"=="" (
+    echo No tag available.
+    set tag_string=
+) else (
+    rem Add a prefix to format the application name nicely
+    set tag_string=-%tag_string%
+)
+
 rem Now work out some version information which we will parse into a variable and use later.
 rem Wrap the arguments to git describe in quotes as the --abbrev clause seems to require it
 rem Requires the folloing in the 'main' package:
 rem var version string
+rem The tag portion of this info should tally with the tag acquired above, but also contain commit info
 for /F "tokens=*" %%g in ('git describe "--tags" "--long" "--abbrev=7"') do (
   SET version_string=%%g
   rem echo Version: -%version_string%-
@@ -61,7 +77,7 @@ for %%y in (%platforms%) do (
     rem echo GOARCH=!GOARCH!
 
     rem Name the built application using platform details, and add .exe for Windows 
-    set output_name=%package_name%-!GOOS!-!GOARCH!
+    set output_name=%package_name%%tag_string%-!GOOS!-!GOARCH!
     if "!GOOS!"=="windows" set output_name=!output_name!.exe
 
     rem Invoke the build command and check the outcome
