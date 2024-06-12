@@ -12,9 +12,15 @@ fi
 
 package_split=(${package//\// })
 package_name=${package_split[-1]}
-    
+
+tag_string=$(git tag --sort=taggerdate | tail -1)
+if [[ -z "$tag_string" ]]; then
+    echo "No tag available."
+    set tag_string=unknown
+fi
+
 # Get the version information from git tags
-# Requires the folloing in the 'main' package:
+# Requires the following in the 'main' package:
 # var version string
 version_string=$(git describe --tags --long --abbrev=7)
 if [[ -z "$version_string" ]]; then
@@ -32,7 +38,7 @@ do
     platform_split=(${platform//\// })
     GOOS=${platform_split[0]}
     GOARCH=${platform_split[1]}
-    output_name=$package_name'-'$GOOS'-'$GOARCH
+    output_name=$package_name'-'$tag_string'-'$GOOS'-'$GOARCH
     if [ $GOOS = "windows" ]; then
         output_name+='.exe'
     fi    
